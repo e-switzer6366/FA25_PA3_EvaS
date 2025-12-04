@@ -120,9 +120,19 @@ void printPath(pair<int,int> exitcell,
 bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
+    //edge cases, if the cell is a wall, and if we already visited current cell
+    if (maze[entr][entc]==1) {
+        return false;//backtrack
+    }
+    if (visited[entr][entc]==true) {
+        return false;//backtrack
+    }
+
     visited[entr][entc] = true;
 
-// }
+    //for (int r = 0; r < maze.size(); r++) {}
+
+ }
 
 
 // ----------------------------------------------------------
