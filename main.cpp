@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <stack>
 
 using namespace std;
 
@@ -127,8 +128,10 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
     if (visited[entr][entc]==true) {
         return false;//backtrack
     }
+    std::stack<std::pair<int, int>> s;//declaring the stack as a pair
 
-    visited[entr][entc] = true;
+    visited[entr][entc] = true;//marking cell as visited
+    s.push({entr, entc});//pushing onto the stack because the case if cell is 1 has already passed.
 
     //for (int r = 0; r < maze.size(); r++) {}
 
