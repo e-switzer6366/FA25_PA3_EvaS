@@ -121,6 +121,10 @@ void printPath(pair<int,int> exitcell,
 bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
+
+    if (newr<0||newc<0) {//skip this direction if you cant move a certain way
+        return false;
+    }
     //edge cases, if the cell is a wall, and if we already visited current cell
     if (maze[entr][entc]==1) {
         cout << "Ouch, you hit a wall!! :("<<endl;
@@ -139,11 +143,16 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
     visited[entr][entc] = true;//marking cell as visited
     s.push({entr, entc});//pushing onto the stack because the case if cell is 1 has already passed.
 
-    for (int i = 0; i < 4; i++) {
-        int r = entr + dr[i];
-        int c = entc + dc[i];
-    }
+    for (int i = 0; i < 4; i++) {//loops through the four directions of dr and dc
+        int newr = entr + dr[i];//goes to next neighbor(making new row)
+        int newc = entc + dc[i];//goes to next neighbor(making new column)
 
+        parentr[entr][entc] = newr;//assigning new parent coord for row
+        parentc[entr][entc] = newc;//new parent coords for c
+    }
+    if (dfs(newr,newc,maze,visited,entr,entc,exitr,exitc)) {
+        return true;//tail recursion
+    }
  }
 
 
