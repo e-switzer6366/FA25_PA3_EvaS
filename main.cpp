@@ -122,26 +122,32 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
 
+    int rows = maze.size();
+    int columns = maze[0].size();
+
     if (entr==exitr&&entc==exitc) {//if the exit was found also base case
         cout << "You found the exit!! :D"<<endl;
         return true;
     }
+    if (visited[entr][entc]==true) {
+        return false;
+    }
+    if (maze[entr][entc]==1) {
+        cout << "Ouch, you hit a wall!! :("<<endl;
+        return false;//skip direction
+    }
 
-    std::stack<std::pair<int, int>> s;//declaring the stack as a pair
+    //std::stack<std::pair<int, int>> s;//declaring the stack as a pair
 
     visited[entr][entc] = true;//marking cell as visited
-    s.push({entr, entc});//pushing onto the stack because the case if cell is 1 has already passed.
+    //s.push({entr, entc});//pushing onto the stack because the case if cell is 1 has already passed.
 
     for (int i = 0; i < 4; i++) {//loops through the four directions of dr and dc
         int newr = entr + dr[i];//goes to next neighbor(making new row)
         int newc = entc + dc[i];//goes to next neighbor(making new column)
 
-        if (newr<0||newc<0) {//skip this direction before assigning coords if you cant move a certain way
+        if (newr<0||newc<0||newr>= rows||newc>=columns) {//skip this direction before assigning coords if you cant move a certain way
             continue;
-        }
-        if (maze[entr][entc]==1) {
-            cout << "Ouch, you hit a wall!! :("<<endl;
-            continue;//skip direction
         }
 
         //assigning new parent coords so it can backtrack the path once its ready like breadcrumbs
@@ -152,10 +158,10 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
             //cout<<"you went thru"<<endl;
             return true;//tail recursion
         }
-        s.pop();
-        return false;//backtracks(pops from stack) if theres a dead end or no path somehow4
-    }
 
+    }
+    //s.pop();
+    return false;//backtracks(pops from stack) if theres a dead end or no path somehow
  }
 
 
