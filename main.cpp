@@ -122,23 +122,24 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
 
-    visited[entr][entc] = true;//marking the first cell as visited
+    visited[entr][entc] = true;//marking the first cell as visited and cells after recursion
     int rows = maze.size();
     int columns = maze[0].size();
 
-    if (entr==exitr&&entc==exitc) {//if the exit was found also base case
+    if (entr==exitr && entc==exitc) {//if the exit was found also **base case**
         cout << "You found the exit!! :D"<<endl;
         return true;
     }
 
     for (int i = 0; i < 4; i++) {//loops through the four directions of dr and dc
+
         int newr = entr + dr[i];//goes to next neighbor(making new row)
         int newc = entc + dc[i];//goes to next neighbor(making new column)
 
         if (newr<0||newr>= rows||newc<0||newc>=columns) {//skip this direction before assigning coords if you cant move a certain way(checks bounds)
             continue;
         }
-        if (visited[newr][newc]) {//skip it because we visited already
+        if (visited[newr][newc]==true) {//skip it because we visited already
             continue;
         }
         if (maze[newr][newc]==1) {
