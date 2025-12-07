@@ -122,6 +122,7 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
 
+    visited[entr][entc] = true;//marking the first cell as visited
     int rows = maze.size();
     int columns = maze[0].size();
 
@@ -129,24 +130,19 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         cout << "You found the exit!! :D"<<endl;
         return true;
     }
-    if (visited[entr][entc]==true) {
-        return false;
-    }
-    if (maze[entr][entc]==1) {
-        cout << "Ouch, you hit a wall!! :("<<endl;
-        return false;//skip direction
-    }
-
-    //std::stack<std::pair<int, int>> s;//declaring the stack as a pair
-
-    visited[entr][entc] = true;//marking cell as visited
-    //s.push({entr, entc});//pushing onto the stack because the case if cell is 1 has already passed.
 
     for (int i = 0; i < 4; i++) {//loops through the four directions of dr and dc
         int newr = entr + dr[i];//goes to next neighbor(making new row)
         int newc = entc + dc[i];//goes to next neighbor(making new column)
 
-        if (newr<0||newc<0||newr>= rows||newc>=columns) {//skip this direction before assigning coords if you cant move a certain way
+        if (newr<0||newr>= rows||newc<0||newc>=columns) {//skip this direction before assigning coords if you cant move a certain way(checks bounds)
+            continue;
+        }
+        if (visited[newr][newc]) {//skip it because we visited already
+            continue;
+        }
+        if (maze[newr][newc]==1) {
+            cout << "Ouch, you hit a wall!! :("<<endl;
             continue;
         }
 
@@ -155,15 +151,11 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         parentc[newr][newc] = entc;
 
         if (dfs(newr,newc,maze,visited,parentr,parentc,exitr,exitc)) {
-            //cout<<"you went thru"<<endl;
             return true;//tail recursion
         }
-
     }
-    //s.pop();
-    return false;//backtracks(pops from stack) if theres a dead end or no path somehow
+    return false;//backtracks if theres a dead end or no path somehow
  }
-
 
 // ----------------------------------------------------------
 // MAIN PROGRAM (students add DFS calls and logic)
@@ -202,6 +194,7 @@ int main() {
     // STUDENT WORK:
     // Call your DFS, track visited, and fill parent_r and parent_c
     // ------------------------------------------------------
+
    bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
 
     // ------------------------------------------------------
