@@ -122,9 +122,6 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
 
-    if (newr<0||newc<0) {//skip this direction if you cant move a certain way
-        return false;
-    }
     //edge cases, if the cell is a wall, and if we already visited current cell
     if (maze[entr][entc]==1) {
         cout << "Ouch, you hit a wall!! :("<<endl;
@@ -147,12 +144,18 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         int newr = entr + dr[i];//goes to next neighbor(making new row)
         int newc = entc + dc[i];//goes to next neighbor(making new column)
 
+        if (newr<0||newc<0) {//skip this direction before assigning coords if you cant move a certain way
+            continue;
+        }
         parentr[entr][entc] = newr;//assigning new parent coord for row
         parentc[entr][entc] = newc;//new parent coords for c
+
+        if (dfs(newr,newc,maze,visited,parentr,parentc,exitr,exitc)) {
+            //cout<<"you went thru"<<endl;
+            return true;//tail recursion
+        }
     }
-    if (dfs(newr,newc,maze,visited,entr,entc,exitr,exitc)) {
-        return true;//tail recursion
-    }
+
  }
 
 
