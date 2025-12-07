@@ -123,20 +123,26 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         int exitr, int exitc) {
     //edge cases, if the cell is a wall, and if we already visited current cell
     if (maze[entr][entc]==1) {
+        cout << "Ouch, you hit a wall!! :("<<endl;
         return false;//backtrack
     }
     if (visited[entr][entc]==true) {
         return false;//backtrack
     }
     if (entr==exitr&&entc==exitc) {//if the exit was found
+        cout << "You found the exit!! :D"<<endl;
         return true;
     }
+
     std::stack<std::pair<int, int>> s;//declaring the stack as a pair
 
     visited[entr][entc] = true;//marking cell as visited
     s.push({entr, entc});//pushing onto the stack because the case if cell is 1 has already passed.
 
-    //for (int r = 0; r < maze.size(); r++) {}
+    for (int i = 0; i < 4; i++) {
+        int r = entr + dr[i];
+        int c = entc + dc[i];
+    }
 
  }
 
@@ -178,17 +184,17 @@ int main() {
     // STUDENT WORK:
     // Call your DFS, track visited, and fill parent_r and parent_c
     // ------------------------------------------------------
-   //bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
+   bool found = dfs(ent_r, ent_c, maze, visited, parent_r, parent_c, exit_r, exit_c);
 
     // ------------------------------------------------------
     // STUDENT WORK:
     // If found, print the path
     // ------------------------------------------------------
-     if (found) {
+    if (found) {
          printPath(exitcell, parent_r, parent_c, ent_r, ent_c);
-     } else {
+    } else {
         cout << "\nNo path exists.\n";
-     }
+    }
 
     return 0;
 }
