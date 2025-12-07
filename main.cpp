@@ -122,15 +122,7 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         vector<vector<bool>>& visited, vector<vector<int>> parentr, vector<vector<int>> parentc,
         int exitr, int exitc) {
 
-    //edge cases, if the cell is a wall, and if we already visited current cell
-    if (maze[entr][entc]==1) {
-        cout << "Ouch, you hit a wall!! :("<<endl;
-        return false;//backtrack
-    }
-    if (visited[entr][entc]==true) {
-        return false;//backtrack
-    }
-    if (entr==exitr&&entc==exitc) {//if the exit was found
+    if (entr==exitr&&entc==exitc) {//if the exit was found also base case
         cout << "You found the exit!! :D"<<endl;
         return true;
     }
@@ -147,13 +139,21 @@ bool dfs(int entr, int entc, vector<vector<int>>& maze,
         if (newr<0||newc<0) {//skip this direction before assigning coords if you cant move a certain way
             continue;
         }
-        parentr[entr][entc] = newr;//assigning new parent coord for row
-        parentc[entr][entc] = newc;//new parent coords for c
+        if (maze[entr][entc]==1) {
+            cout << "Ouch, you hit a wall!! :("<<endl;
+            continue;//skip direction
+        }
+
+        //assigning new parent coords so it can backtrack the path once its ready like breadcrumbs
+        parentr[newr][newc] = entr;//the new parent is what the current coords used to be
+        parentc[newr][newc] = entc;
 
         if (dfs(newr,newc,maze,visited,parentr,parentc,exitr,exitc)) {
             //cout<<"you went thru"<<endl;
             return true;//tail recursion
         }
+        s.pop();
+        return false;//backtracks(pops from stack) if theres a dead end or no path somehow4
     }
 
  }
